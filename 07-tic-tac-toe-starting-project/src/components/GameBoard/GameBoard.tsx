@@ -1,18 +1,41 @@
-const initialGameBoard = [
+type PlayerSymbol = "X" | "O" | null;
+type Turn = {
+  square: {
+    row: number;
+    col: number;
+  };
+  player: "X" | "O";
+};
+type GameBoardProps = {
+  onSelectSquare: (row: number, col: number) => void;
+  turns: Turn[];
+};
+
+const initialGameBoard: PlayerSymbol[][] = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-export const GameBoard = () => {
+export const GameBoard = ({ onSelectSquare, turns }: GameBoardProps) => {
+  let gameBoard: PlayerSymbol[][] = initialGameBoard.map((row) => [...row]);
+
+  for (const turn of turns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+
+    gameBoard[row][col] = player;
+  }
   return (
     <ol id="game-board">
-      {initialGameBoard.map((row, rowIndex) => (
+      {gameBoard.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button>{playerSymbol}</button>
+                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>
+                  {playerSymbol}
+                </button>
               </li>
             ))}
           </ol>
