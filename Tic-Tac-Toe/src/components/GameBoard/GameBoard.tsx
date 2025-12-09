@@ -1,33 +1,22 @@
-import type { Turn, PlayerSymbol } from "../../App.js";
+import type { PlayerSymbol, Turn } from "../../App.js";
 
 type GameBoardProps = {
   onSelectSquare: (row: number, col: number) => void;
-  turns: Turn[];
+  board: PlayerSymbol[][];
 };
 
-const initialGameBoard: PlayerSymbol[][] = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
-
-export const GameBoard = ({ onSelectSquare, turns }: GameBoardProps) => {
-  let gameBoard: PlayerSymbol[][] = initialGameBoard.map((row) => [...row]);
-
-  for (const turn of turns) {
-    const { square, player } = turn;
-    const { row, col } = square;
-
-    gameBoard[row][col] = player;
-  }
+export const GameBoard = ({ onSelectSquare, board }: GameBoardProps) => {
   return (
     <ol id="game-board">
-      {gameBoard.map((row, rowIndex) => (
+      {board.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>
+                <button
+                  onClick={() => onSelectSquare(rowIndex, colIndex)}
+                  disabled={playerSymbol !== null}
+                >
                   {playerSymbol}
                 </button>
               </li>

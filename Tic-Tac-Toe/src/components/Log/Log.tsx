@@ -1,9 +1,8 @@
 import type { Turn } from "../../App";
 
-
 type LogProps = {
   turns: Turn[];
-}
+};
 
 export const Log = ({ turns }: LogProps) => {
   return (
