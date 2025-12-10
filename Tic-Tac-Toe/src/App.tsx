@@ -6,11 +6,13 @@ import { WINNING_COMBINATIONS } from "./winning-combinations.json";
 import { GameOver } from "./components/GameOver/GameOver";
 export type PlayerSymbol = "X" | "O" | null;
 
+// Turn values
 export type Turn = {
   square: { row: number; col: number };
   player: "X" | "O";
 };
 
+// Actual active player
 function deriveActivePlayer(gameTurns: Turn[]): "X" | "O" {
   let currenPlayer: "X" | "O" = "X";
 
@@ -21,12 +23,14 @@ function deriveActivePlayer(gameTurns: Turn[]): "X" | "O" {
   return currenPlayer;
 }
 
+// Board values
 const initialGameBoard: PlayerSymbol[][] = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
+// App
 function App() {
   const [players, setPlayers] = useState({
     X: "Player 1",
@@ -66,20 +70,21 @@ function App() {
 
   const hasDraw = gameTurns.length === 9 && !winner;
 
+  // Handle selected square
   function handleSelectSquare(row: number, col: number) {
     setGameTurns((prevTurns) => {
       const currentPlayer = deriveActivePlayer(prevTurns);
       const newTurn: Turn = { square: { row, col }, player: currentPlayer };
       return [newTurn, ...prevTurns];
     });
-
-    // setActivePlayer((p) => (p === "X" ? "O" : "X"));
   }
 
+  // Handle Restart
   function handleRestart() {
     setGameTurns([]);
   }
 
+  // Handle changing name of the player
   function handlerPlayerNameChange(symbol: "X" | "O", newName: string) {
     setPlayers((prevPlayers) => {
       return {
@@ -91,15 +96,21 @@ function App() {
 
   return (
     <main>
-      <h1>Tic-Tac-Toe</h1>
+      <header>
+        <h1>Tic-Tac-Toe</h1>
+      </header>
       <div id="game-container">
         <ol id="players" className="highlight-player">
+          {/* Player Component */}
           <Player
             initialName="Player 1"
             symbol="X"
             isActive={activePlayer === "X"}
             onChangeName={handlerPlayerNameChange}
           />
+
+          {/* Player Component */}
+
           <Player
             initialName="Player 2"
             symbol="O"
@@ -108,9 +119,16 @@ function App() {
           />
         </ol>
         {(winner || hasDraw) && (
+          // Showing Game Over modal
+
           <GameOver winner={winner} onRematch={handleRestart} />
         )}
+
+        {/* Displaying Game Board */}
+
         <GameBoard board={gameBoard} onSelectSquare={handleSelectSquare} />
+
+        {/* Display game turns of players */}
 
         <Log turns={gameTurns} />
       </div>

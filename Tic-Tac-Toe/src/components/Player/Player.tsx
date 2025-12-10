@@ -25,17 +25,16 @@ export const Player = ({
       return !editing;
     });
   }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    setPlayerName(e.target.value);
-  }
-
   let editPlayerName = <span className="player-name">{playerName}</span>;
 
   if (isEditing) {
     editPlayerName = (
-      <input type="text" value={playerName} onChange={handleChange} required />
+      <input
+        type="text"
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
+        required
+      />
     );
   }
   return (
@@ -44,7 +43,9 @@ export const Player = ({
         {editPlayerName}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
+      <button type="button" onClick={handleEditClick}>
+        {isEditing ? "Save" : "Edit"}
+      </button>
     </li>
   );
 };

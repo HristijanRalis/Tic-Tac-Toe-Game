@@ -1,4 +1,4 @@
-import type { PlayerSymbol, Turn } from "../../App.js";
+import type { PlayerSymbol } from "../../App.js";
 
 type GameBoardProps = {
   onSelectSquare: (row: number, col: number) => void;
